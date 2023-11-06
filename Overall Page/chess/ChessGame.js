@@ -47,6 +47,11 @@ class ChessGame {
         this.backButton();
         this.testButton();
         this.boardButton();
+        this.windowResizeAndScroll();
+    }
+    windowResizeAndScroll(){
+        window.addEventListener("scroll", e=>{this.addPieces();});
+        window.addEventListener("resize", e=>{this.addPieces();});
     }
     addBoardToAllList() {
         const fen = this.dictToFen(this.piecesPos)
@@ -525,10 +530,10 @@ class ChessGame {
             tintDiv.style.width = "12.5%";
             tintDiv.style.height = "12.5%";
         } else {
-            tintDiv.style.left = "20px";
-            tintDiv.style.top = "20px";
-            tintDiv.style.width = "20px";
-            tintDiv.style.height = "20px";
+            tintDiv.style.margin = "auto";
+            tintDiv.style.top = "35%";
+            tintDiv.style.width = "30%";
+            tintDiv.style.height = "30%";
         }
         tintDiv.style.pointerEvents = "none";
         divToTint.appendChild(tintDiv);

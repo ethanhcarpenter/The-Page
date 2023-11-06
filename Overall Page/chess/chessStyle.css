@@ -18,15 +18,13 @@
     background-size: 110%;
     text-align: center;
 }
-
-.navbutton {
-    border: none;
-    margin: 1%; 
-    margin-top: 2vh; 
-    padding: 2vw; 
+.navbutton{
+    display: inline-block;
+    border: 0px solid rgb(255, 255, 255);
+    margin: 2%;
+    color: #fff;
     font-size: larger;
-    color: black;
-    background-color: #898989;
+    background-color: transparent;
 }
 
 .centered-box {
