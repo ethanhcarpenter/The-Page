@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../style.css"></link>
+    <!-- <script defer src="https://pyscript.net/latest/pyscript.js"></script> -->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./snakeStyle.css">
+    </link>
 </head>
-<body onload="brython()">
+
+<body>
     <nav class="nav">
         <div class="header">
             <button class="navl" id="logo">Logo</button>
@@ -18,6 +23,22 @@
     </nav>
     <div class="boxtop">_</div>
     <div class="line">_</div>
-    
+    <!-- <py-script src="game.py"></py-script> -->
+
+    <div class="centered-box" id="centered-box">
+        <div class="tic-tac-toe">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+    </div>
+
 </body>
+
 </html>

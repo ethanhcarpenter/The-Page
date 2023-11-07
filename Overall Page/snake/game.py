@@ -1,6 +1,2 @@
-import tkinter as tk
-class Game():
-    def __init__(self):
-        root=tk.Tk()
-        root.mainloop()
-Game()
+from js import document,console
+console.log(23)
