@@ -7,7 +7,7 @@ const navbar={
 };
 const links={
     logo:"",
-    apps:"./gamePage/gamePage.html",
+    apps:"./pages/gamePage/gamePage.html",
     op2:"",
     op3:"",
     account:""
