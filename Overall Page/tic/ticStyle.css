@@ -2,7 +2,7 @@
     width: 90vw;
     height: auto;
     position: relative;
-    top: 5vh;
+    top: 3vh;
     background-color: #333;
     border: 0px solid #000;
     margin: auto;
@@ -26,9 +26,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
     border-right: 5px solid #000;
     border-bottom: 5px solid #000; 
+    font-size: 1000%;
+    font-family: cursive;
 }
 
 .cell:nth-child(3n) {
@@ -39,4 +40,10 @@
 .cell:nth-child(8),
 .cell:nth-child(9) {
     border-bottom: none; 
+}
+.reset{
+    padding: 2%;
+    font-size: xx-large;
+    background-color: transparent;
+    border: 0px;
 }
