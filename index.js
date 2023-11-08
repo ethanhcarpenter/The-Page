@@ -14,7 +14,6 @@ const links={
 };
 navbar.apps.addEventListener("click", button => {
     frame=document.getElementById("frame");
-    console.log(frame);
     frame.src=links.apps;
     
 });

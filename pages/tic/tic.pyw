@@ -26,11 +26,10 @@ class Game():
     def initHTML(self):
         squares=document.getElementById("board").children
         for square in squares:
-            square.addEventListener("click", create_proxy(self.move))
+            square.addEventListener("click", create_proxy(self.human))
         document.getElementById("reset").addEventListener("click", create_proxy(self.reset))
-            
-    def move(self,e):
-        place=int(e.target.id)
+    
+    def move(self,place):
         row, col = (place - 1) // 3, (place - 1) % 3
         if self.board[row][col] == " ":
             self.board[row][col] = self.turn
@@ -38,23 +37,31 @@ class Game():
             self.allmoves.append((place))
             self.updateDivs()
             if self.checkWin():
-                print(f"{self.board[row][col]} won!")
+                print(f" {self.player1 if self.turn == self.player2 else self.player2} won!")
                 self.updateDivs()
-                self.winLine()
             else:
                 self.draw()
+                
+            
+    def human(self,e):
+        place=int(e.target.id)
+        self.move(place)
+        self.ai()
+        console.log(23)
     def reset(self,e=None):
+        self.initHTML()
         self.player1 = "x"
         self.player2 = "o"
         self.board = [[" " for _ in range(3)] for _ in range(3)]
         self.turn = self.player1
         self.allmoves = []
         self.updateDivs(True)
-        self.initHTML()
-    def draw(self):
+    def draw(self,mm=False):
         if len(self.allmoves)==9:
-            self.reset()
-    def checkWin(self):
+            if not mm: self.reset()
+            return True
+        return False
+    def checkWin(self,mm=False):
         winCombo = [
         [(0, 0), (0, 1), (0, 2)],
         [(1, 0), (1, 1), (1, 2)],
@@ -69,7 +76,7 @@ class Game():
         for combination in winCombo:
             symbols = [self.board[r][c] for (r, c) in combination]
             if len(set(symbols)) == 1 and " " not in symbols:
-                self.winLine(combination)
+                if not mm: self.winLine(combination)
                 return True
         return False
     def winLine(self,combo):
@@ -80,7 +87,40 @@ class Game():
         for square in squares:
             s=square.cloneNode(False)
             square.parentNode.replaceChild(s,square)
+    def ai(self):
+        a=self.minimax(self.turn)
+        console.log(a)
+              
+    def minimax(self, player):
+        if self.checkWin(True):
+            if player == "X":
+                return -1
+            if player == "X":
+                return 1
+        if self.draw(True):
+            return 0
 
+        if player == "O":
+            best_score = -float("inf")
+            for row in range(3):
+                for col in range(3):
+                    if self.board[row][col] == " ":
+                        self.board[row][row] = player
+                        score = self.minimax("X")
+                        self.board[row][col] = " "
+                        best_score = max(score, best_score)
+            return best_score
+        else:
+            best_score = float("inf")
+            for row in range(3):
+                for col in range(3):
+                    if self.board[row][col] == " ":
+                        self.board[row][col] = player
+                        score = self.minimax("O")
+                        self.board[row][col] = " "
+                        best_score = min(score, best_score)
+            return best_score
+        
 
         
         
