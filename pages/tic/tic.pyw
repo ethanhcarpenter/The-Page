@@ -38,7 +38,7 @@ class Game:
             self.allmoves.append(place)
             self.updateDivs()
             if self.checkWin():
-                print(f"{self.player1 if self.turn == self.player2 else self.player2} won!")
+                #print(f"{self.player1 if self.turn == self.player2 else self.player2} won!")
                 self.updateDivs()
             else:
                 self.draw()
@@ -47,16 +47,15 @@ class Game:
     def human(self, e):
         place = int(e.target.id)
         self.move(place)
-        self.ai()
 
     def reset(self, e=None):
-        self.initHTML()
         self.player1 = "x"
         self.player2 = "o"
         self.turn = self.player1
         self.allmoves = []
         self.board = [[" " for _ in range(3)] for _ in range(3)]
         self.updateDivs(True)
+        self.initHTML()
 
     def draw(self, mm=False):
         
