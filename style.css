@@ -23,6 +23,7 @@ body{
     margin-right: 0%;
     color: #fff;
     background-color: transparent;
+    cursor: pointer;
 }
 .navr {
     border: 0px solid rgb(255, 255, 255);
