@@ -1,6 +1,6 @@
 .centered-box {
     width: 90vw;
-    height: auto;
+    height: 95vh;
     position: relative;
     top: 3vh;
     background-color: #333;
@@ -28,7 +28,7 @@
     justify-content: center;
     border-right: 5px solid #000;
     border-bottom: 5px solid #000; 
-    font-size: 1000%;
+    font-size: 15vb;
     font-family: cursive;
 }
 
@@ -46,4 +46,10 @@
     font-size: xx-large;
     background-color: transparent;
     border: 0px;
+}
+.bottomFill{
+    color: #333;
+    font-size: xx-large;
+    content: 23434234234;
+    background-color: #333;
 }
