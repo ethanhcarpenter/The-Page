@@ -6,6 +6,12 @@
 <head runat="server">
     <title>Snake Game</title>
     <style>
+        body{
+            background-color=#333;
+        }
+        form{
+            background-color=#333;
+        }
         .centered-box {
             width: 90vw;
             height: 95vh;
