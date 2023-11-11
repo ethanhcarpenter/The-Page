@@ -27,7 +27,9 @@ class Game:
     def initHTML(self):
         squares = document.getElementById("board").children
         for square in squares:
-            square.addEventListener("click", create_proxy(self.human))
+            newSqaure = square.cloneNode(True)
+            square.parentNode.replaceChild(newSqaure, square);
+            newSqaure.addEventListener("click", create_proxy(self.human))
         document.getElementById("reset").addEventListener("click", create_proxy(self.reset))
 
     def move(self, place):
