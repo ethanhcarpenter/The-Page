@@ -7,17 +7,28 @@ class Game():
         self.board = document.getElementById("board")
         self.pixels = []
         self.amount = 25
-        self.speed=5
-        self.direction = ""
-        self.border = 1
+        self.speed=4
+        self.appleStart=1
+        self.direction = "up"
+        self.border = 0
         self.headPixel = None
         self.bodyPixels = []
+        self.applePixels=[]
         document.addEventListener("keydown", create_proxy(self.keyEvent))
         setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
         self.createGrid()
         self.startup()
-        self.addApple()
-
+        for i in range(self.appleStart):
+            self.addApple()
+    def restart(self):
+        self.direction = "up"
+        self.headPixel = None
+        self.bodyPixels = []
+        self.applePixels=[]
+        self.startup()
+        for i in range(self.appleStart):
+            self.addApple()
+        
     def createGrid(self):
         self.board.style.display = "grid"
         self.board.style.gridTemplateColumns = f"repeat({self.amount}, 1fr)"
@@ -49,7 +60,10 @@ class Game():
             pixel.style.border = f"{self.border}px solid #666"
             pixel.style.boxSizing = "border-box"
             pixel.style.cursor = "pointer"
-            row, col = map(int, pixel.id.split('ffff'))
+            l=pixel.id.split('ffff')
+            l2=l[1].split('head')[0]
+            l2=l2.split('body')[0]
+            row, col = int(l[0]), int(l2)
             if (row,col) == startSnake[0]:
                 pixel.style.backgroundColor = "green"
                 pixel.id = f"{row}ffff{col}head"
@@ -63,13 +77,17 @@ class Game():
     def keyEvent(self, event):
         key = event.keyCode
         if key == 37:
-            self.direction = "left"
+            if self.direction!="right":
+                self.direction = "left"
         elif key == 38:
-            self.direction = "up"
+            if self.direction!="down":
+                self.direction = "up"
         elif key == 39:
-            self.direction = "right"
+            if self.direction!="left":
+                self.direction = "right"
         elif key == 40:
-            self.direction = "down"
+            if self.direction!="up":
+                self.direction = "down"
 
     def update(self):
         if self.direction and self.headPixel:
@@ -90,15 +108,27 @@ class Game():
             newHeadRow -= 1
         elif self.direction == "down":
             newHeadRow += 1
-        if 0 <= newHeadRow < self.amount and 0 <= newHeadCol < self.amount:
-            newHeadId = newHeadRow * self.amount + newHeadCol
-            newHeadPixel = self.pixels[newHeadId]
-            newHeadPixel.style.backgroundColor = "green"
-            tailPixel = self.bodyPixels[-1]
-            tailPixel.style.backgroundColor = "#000"
-            self.bodyPixels.remove(tailPixel)
-            self.bodyPixels.insert(0,self.headPixel)
-            self.headPixel = newHeadPixel
+        if 0 > newHeadRow:
+            newHeadRow=self.amount-1
+        if 0 > newHeadCol:
+            newHeadCol=self.amount-1
+        if self.amount <= newHeadRow:
+            newHeadRow=0
+        if self.amount <= newHeadCol:
+            newHeadCol=0
+        newHeadId = newHeadRow * self.amount + newHeadCol
+        newHeadPixel = self.pixels[newHeadId]
+        if newHeadPixel in self.bodyPixels:
+            self.restart()
+        newHeadPixel.style.backgroundColor = "green"
+        tailPixel = self.bodyPixels[-1]
+        tailPixel.style.backgroundColor = "#000"
+        if newHeadPixel in self.applePixels:
+            self.applePixels.remove(newHeadPixel)
+            self.addApple()
+        else: self.bodyPixels.remove(tailPixel) 
+        self.bodyPixels.insert(0,self.headPixel)
+        self.headPixel = newHeadPixel
     def addApple(self):
         randomInt=random.randint(0,self.amount**2-1)
         randomPixel=self.pixels[randomInt]
@@ -108,9 +138,11 @@ class Game():
                 if randomPixel != self.headPixel:
                     condition=False
                     continue
-        randomInt=random.randint(0,self.amount**2-1)
-        randomPixel=self.pixels[randomInt]
+            randomInt=random.randint(0,self.amount**2-1)
+            randomPixel=self.pixels[randomInt]
+        self.applePixels.append(randomPixel)
         randomPixel.style.backgroundColor = "red"
+        
 def main():
     g = Game()
 
