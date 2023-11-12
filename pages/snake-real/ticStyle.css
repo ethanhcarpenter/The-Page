@@ -1,0 +1,15 @@
+body{
+    background-color: #333;
+}
+.centered-box {
+    width: 90vw;
+    height: 95vh;
+    position: relative;
+    top: 3vh;
+    background-color: #333;
+    border: 0px solid #000;
+    margin: auto;
+    padding: 0;
+    text-align: center;
+}
+
