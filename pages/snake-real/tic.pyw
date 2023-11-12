@@ -8,6 +8,7 @@ class Game():
         self.pixels = []
         self.amount = 25
         self.speed=4
+        self.inputs = []
         self.appleStart=1
         self.direction = "up"
         self.border = 0
@@ -76,22 +77,23 @@ class Game():
 
     def keyEvent(self, event):
         key = event.keyCode
-        if key == 37:
-            if self.direction!="right":
-                self.direction = "left"
-        elif key == 38:
-            if self.direction!="down":
-                self.direction = "up"
-        elif key == 39:
-            if self.direction!="left":
-                self.direction = "right"
-        elif key == 40:
-            if self.direction!="up":
-                self.direction = "down"
+        last=self.inputs[-1] if self.inputs else self.direction
+        if key == 37 and last != "right":
+            self.inputs.append("left")
+        elif key == 38 and last != "down":
+            self.inputs.append("up")
+        elif key == 39 and last != "left":
+            self.inputs.append("right")
+        elif key == 40 and last != "up":
+            self.inputs.append("down")
 
     def update(self):
+        
+        if self.inputs:
+            self.direction = self.inputs.pop(0)
         if self.direction and self.headPixel:
             self.moveSnake()
+
 
     def moveSnake(self):
         l=self.headPixel.id.split('ffff')
