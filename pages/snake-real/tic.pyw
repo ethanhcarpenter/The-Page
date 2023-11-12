@@ -7,7 +7,7 @@ class Game():
         self.board = document.getElementById("board")
         self.pixels = []
         self.amount = 25
-        self.speed=4
+        self.speed=2
         self.inputs = []
         self.appleStart=1
         self.direction = "up"
@@ -78,15 +78,22 @@ class Game():
     def keyEvent(self, event):
         key = event.keyCode
         last=self.inputs[-1] if self.inputs else self.direction
-        if key == 37 and last != "right":
-            self.inputs.append("left")
-        elif key == 38 and last != "down":
-            self.inputs.append("up")
-        elif key == 39 and last != "left":
-            self.inputs.append("right")
-        elif key == 40 and last != "up":
-            self.inputs.append("down")
-
+        # if key == 37 and last != "right":
+        #     self.inputs.append("left") if len(self.inputs) != 2 else self.inputs.insert(1,"left")
+        # elif key == 38 and last != "down":
+        #     self.inputs.append("up") if len(self.inputs) != 2 else self.inputs.insert(1,"up")
+        # elif key == 39 and last != "left":
+        #     self.inputs.append("right") if len(self.inputs) != 2 else self.inputs.insert(1,"right")
+        # elif key == 40 and last != "up":
+        #     self.inputs.append("down") if len(self.inputs) != 2 else self.inputs.insert(1,"down")
+        if key==38 and last != "down":
+            self.direction="up"
+        if key ==37 and last!= "right":
+            self.direction="left"
+        if key == 39 and last!= "left":
+            self.direction="right"
+        if key == 40 and last!= "up":
+            self.direction="down"
     def update(self):
         
         if self.inputs:
