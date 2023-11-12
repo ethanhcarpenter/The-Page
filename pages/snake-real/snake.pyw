@@ -3,33 +3,62 @@ from js import console,document, setInterval
 from pyodide.ffi import create_proxy
 
 class Game():
+    def isInt(self,value):
+        try:
+            int(value)
+            return True
+        except ValueError:
+            return False
     def __init__(self):
         self.board = document.getElementById("board")
+        self.createBoard()
         self.pixels = []
         self.amount = 25
         self.speed=2
         self.inputs = []
         self.appleStart=1
-        self.direction = "up"
+        self.direction = ""
         self.border = 0
         self.headPixel = None
         self.bodyPixels = []
         self.applePixels=[]
+        document.getElementById("play").addEventListener("click", create_proxy(self.play))
+        document.getElementById("reset").addEventListener("click", create_proxy(self.restart))
         document.addEventListener("keydown", create_proxy(self.keyEvent))
         setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
         self.createGrid()
         self.startup()
         for i in range(self.appleStart):
             self.addApple()
-    def restart(self):
-        self.direction = "up"
+    def restart(self,e=None):
+        self.board = document.getElementById("board")
+        self.createBoard()
+        self.pixels = []
+        self.amount = 25
+        self.speed=2
+        self.inputs = []
+        self.appleStart=1
+        self.direction = ""
+        self.border = 0
         self.headPixel = None
         self.bodyPixels = []
         self.applePixels=[]
+        document.getElementById("play").addEventListener("click", create_proxy(self.play))
+        document.getElementById("reset").addEventListener("click", create_proxy(self.restart))
+        document.addEventListener("keydown", create_proxy(self.keyEvent))
+        setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
+        self.createGrid()
         self.startup()
         for i in range(self.appleStart):
             self.addApple()
         
+    def createBoard(self):
+        self.board.remove()
+        self.board = document.createElement("div")
+        self.board.id = "board"
+        self.board.className = "board"
+        document.getElementById("centered-box").prepend(self.board)
+
     def createGrid(self):
         self.board.style.display = "grid"
         self.board.style.gridTemplateColumns = f"repeat({self.amount}, 1fr)"
@@ -100,8 +129,10 @@ class Game():
             self.direction = self.inputs.pop(0)
         if self.direction and self.headPixel:
             self.moveSnake()
-
-
+    def play(self,e):
+        document.getElementById("play").disabled = True
+        document.getElementById("play").disabled = False
+        self.direction ="up"
     def moveSnake(self):
         l=self.headPixel.id.split('ffff')
         l2=l[1].split('head')[0]
