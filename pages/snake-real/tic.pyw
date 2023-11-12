@@ -7,16 +7,18 @@ class Game():
         self.board = document.getElementById("board")
         self.pixels = []
         self.amount = 25
-        self.speed=1
+        self.speed=5
         self.direction = ""
         self.border = 1
-        self.head_pixel = None
-        document.addEventListener("keydown", create_proxy(self.handle_arrow_key))
+        self.headPixel = None
+        self.bodyPixels = []
+        document.addEventListener("keydown", create_proxy(self.keyEvent))
         setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
-        self.create_grid()
+        self.createGrid()
         self.startup()
+        self.addApple()
 
-    def create_grid(self):
+    def createGrid(self):
         self.board.style.display = "grid"
         self.board.style.gridTemplateColumns = f"repeat({self.amount}, 1fr)"
         self.board.style.gridTemplateRows = f"repeat({self.amount}, 1fr)"
@@ -34,13 +36,13 @@ class Game():
                 cell.style.boxSizing = "border-box"
                 self.board.appendChild(cell)
                 self.pixels.append(cell)
-    def middle_add(self,middle,rowChange,colChange):
+    def middleChange(self,middle,rowChange,colChange):
         return((middle[0]+rowChange,middle[1]+colChange))
     def startup(self):
-        middle_addition = 0.5 if self.amount % 2 == 1 else 0
-        middle = (int((self.amount/ 2) + middle_addition)-1,int((self.amount/ 2) + middle_addition)-1) 
+        middleAdd = 0.5 if self.amount % 2 == 1 else 0
+        middle = (int((self.amount/ 2) + middleAdd)-1,int((self.amount/ 2) + middleAdd)-1) 
         
-        start_snake = [middle,self.middle_add(middle,1,0),self.middle_add(middle,2,0)]
+        startSnake = [middle,self.middleChange(middle,1,0),self.middleChange(middle,2,0)]
         for pixel in self.pixels:
             pixel.style.backgroundColor = "#000"
             pixel.style.color = "#000"
@@ -48,16 +50,17 @@ class Game():
             pixel.style.boxSizing = "border-box"
             pixel.style.cursor = "pointer"
             row, col = map(int, pixel.id.split('ffff'))
-            if (row,col) == start_snake[0]:
+            if (row,col) == startSnake[0]:
                 pixel.style.backgroundColor = "green"
                 pixel.id = f"{row}ffff{col}head"
-                self.head_pixel = pixel
+                self.headPixel = pixel
 
-            elif (row,col) in start_snake:
+            elif (row,col) in startSnake:
                 pixel.style.backgroundColor = "green"
                 pixel.id = f"{row}ffff{col}body"
+                self.bodyPixels.append(pixel)
 
-    def handle_arrow_key(self, event):
+    def keyEvent(self, event):
         key = event.keyCode
         if key == 37:
             self.direction = "left"
@@ -69,34 +72,45 @@ class Game():
             self.direction = "down"
 
     def update(self):
-        if self.direction and self.head_pixel:
-            self.move_snake()
+        if self.direction and self.headPixel:
+            self.moveSnake()
 
-    def move_snake(self):
-        l=self.head_pixel.id.split('ffff')
+    def moveSnake(self):
+        l=self.headPixel.id.split('ffff')
         l2=l[1].split('head')[0]
         l2=l2.split('body')[0]
         row, col = int(l[0]), int(l2)
-        new_head_row, new_head_col = row, col
+        newHeadRow, newHeadCol = row, col
 
         if self.direction == "left":
-            new_head_col -= 1
+            newHeadCol -= 1
         elif self.direction == "right":
-            new_head_col += 1
+            newHeadCol += 1
         elif self.direction == "up":
-            new_head_row -= 1
+            newHeadRow -= 1
         elif self.direction == "down":
-            new_head_row += 1
-        #console.log(0 <= new_head_row < self.amount and 0 <= new_head_col < self.amount)
-        if 0 <= new_head_row < self.amount and 0 <= new_head_col < self.amount:
-            new_head_id = new_head_row * self.amount + new_head_col
-            new_head_pixel = self.pixels[new_head_id]
-
-            self.head_pixel.style.backgroundColor = "#000"
-            new_head_pixel.style.backgroundColor = "green"
-            self.head_pixel = new_head_pixel
-        
-
+            newHeadRow += 1
+        if 0 <= newHeadRow < self.amount and 0 <= newHeadCol < self.amount:
+            newHeadId = newHeadRow * self.amount + newHeadCol
+            newHeadPixel = self.pixels[newHeadId]
+            newHeadPixel.style.backgroundColor = "green"
+            tailPixel = self.bodyPixels[-1]
+            tailPixel.style.backgroundColor = "#000"
+            self.bodyPixels.remove(tailPixel)
+            self.bodyPixels.insert(0,self.headPixel)
+            self.headPixel = newHeadPixel
+    def addApple(self):
+        randomInt=random.randint(0,self.amount**2-1)
+        randomPixel=self.pixels[randomInt]
+        condition=True
+        while condition:
+            if randomPixel not in self.bodyPixels:
+                if randomPixel != self.headPixel:
+                    condition=False
+                    continue
+        randomInt=random.randint(0,self.amount**2-1)
+        randomPixel=self.pixels[randomInt]
+        randomPixel.style.backgroundColor = "red"
 def main():
     g = Game()
 
