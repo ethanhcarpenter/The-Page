@@ -6,6 +6,12 @@
 <head runat="server">
     <title>Snake Game</title>
     <style>
+        body{
+            background-color=#333;
+        }
+        form{
+            background-color=#333;
+        }
         .centered-box {
             width: 90vw;
             height: 95vh;
@@ -80,7 +86,9 @@
                 <asp:Button runat="server" class="cell" ID="b8"></asp:Button>
                 <asp:Button runat="server" class="cell" ID="b9"></asp:Button>
             </div>
+            
             <asp:Button runat="server" class="reset"  ID="reset" Text="RESET"></asp:Button>
+            <%--<asp:Button runat="server" class="reset"  ID="computerFirst" Text="CPU First"></asp:Button>--%>
 
         </div>
     </form>

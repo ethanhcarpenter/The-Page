@@ -1,5 +1,5 @@
 import random
-from js import console,document, setInterval
+from js import console,document, setInterval,clearInterval
 from pyodide.ffi import create_proxy
 
 class Game():
@@ -22,10 +22,10 @@ class Game():
         self.headPixel = None
         self.bodyPixels = []
         self.applePixels=[]
+        self.intervalID=setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
         document.getElementById("play").addEventListener("click", create_proxy(self.play))
         document.getElementById("reset").addEventListener("click", create_proxy(self.restart))
         document.addEventListener("keydown", create_proxy(self.keyEvent))
-        setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
         self.createGrid()
         self.startup()
         for i in range(self.appleStart):
@@ -46,7 +46,8 @@ class Game():
         document.getElementById("play").addEventListener("click", create_proxy(self.play))
         document.getElementById("reset").addEventListener("click", create_proxy(self.restart))
         document.addEventListener("keydown", create_proxy(self.keyEvent))
-        setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
+        clearInterval(self.intervalID)
+        self.intervalID=setInterval(create_proxy(self.update), 500/self.speed)  # Snake moves every 500 milliseconds
         self.createGrid()
         self.startup()
         for i in range(self.appleStart):
@@ -73,7 +74,7 @@ class Game():
                 cell.id = f"{row}ffff{col}"
                 cell.style.width = f"calc(80vmin / {self.amount})"
                 cell.style.height = f"calc(80vmin / {self.amount})"
-                cell.style.border = f"{self.border}px solid #666"
+                cell.style.border = f"{self.border}px solid #000"
                 cell.style.boxSizing = "border-box"
                 self.board.appendChild(cell)
                 self.pixels.append(cell)

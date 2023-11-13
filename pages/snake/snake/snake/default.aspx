@@ -86,7 +86,9 @@
                 <asp:Button runat="server" class="cell" ID="b8"></asp:Button>
                 <asp:Button runat="server" class="cell" ID="b9"></asp:Button>
             </div>
+            
             <asp:Button runat="server" class="reset"  ID="reset" Text="RESET"></asp:Button>
+            <%--<asp:Button runat="server" class="reset"  ID="computerFirst" Text="CPU First"></asp:Button>--%>
 
         </div>
     </form>
