@@ -527,8 +527,8 @@ class ChessGame {
         if (full) {
             tintDiv.style.left = "0px";
             tintDiv.style.top = "0px";
-            tintDiv.style.width = "12.5%";
-            tintDiv.style.height = "12.5%";
+            tintDiv.style.width = "100%";
+            tintDiv.style.height = "100%";
         } else {
             tintDiv.style.margin = "auto";
             tintDiv.style.top = "35%";
@@ -552,12 +552,15 @@ class ChessGame {
     }
     onSquareUp(square) {
         this.testerFunc();
-        if (!square) return;
+        if (!square) {
+            this.updateBoard();
+            return;
+        }
         const id = square.id.substring(0, 2);
         this.secondClickSqr = id;
         if (!this.checkMove(id, this.clickedSqr)) {
             this.clicks = 0;
-            this.updateBoard()
+            this.updateBoard();
             return;
         }
         this.setPiecePosition(this.clickedPiece, this.secondClickSqr);
